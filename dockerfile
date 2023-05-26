@@ -8,10 +8,11 @@ ENV REPO https://github.com/tavdog/pixlet
 RUN apt update && apt upgrade && apt install unzip libwebp-dev iputils-ping -y
 
 WORKDIR /tmp
-RUN curl -fsSL NODE_URL | bash - && apt-get install -y nodejs && node -v
+RUN curl -fsSL $NODE_URL | bash - && apt-get install -y nodejs && node -v
 
-RUN git clone REPO
-WORKDIR /tmp/pixlet
+WORKDIR /
+RUN git clone $REPO
+WORKDIR /pixlet
 RUN npm install && npm run build && make build
 
 EXPOSE 8080
