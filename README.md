@@ -1,7 +1,9 @@
 # pixlet-docker
-A dockerfile for [Tidbyt Pixlet](https://github.com/tidbyt/pixlet) 
+A dockerfile for [Tidbyt Pixlet](https://github.com/tidbyt/pixlet)
 
 This allows you to develop pixlet apps in any host OS, then render and serve those apps within this container. 
+
+Uses official golang base image and installs npm 16 specifically.
 
 ## Build 
 
