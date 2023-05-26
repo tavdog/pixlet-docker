@@ -1,25 +1,14 @@
-FROM alpine
-ENV GOPATH /usr/local/go
-ENV REPO $GOPATH/pixlet
-ENV PATH "${PATH}:${GOPATH}/bin:${REPO}"
+FROM golang:latest
 
-#install prereqs
-RUN apk update && \
-    apk upgrade -U && \
-    apk add curl wget git make libc-dev gcc ca-certificates npm libwebp-dev libwebp-tools patchelf gcompat && \
-    rm -rf /var/cache/*
-RUN wget "https://go.dev/dl/$(curl 'https://go.dev/VERSION?m=text').linux-amd64.tar.gz" && tar -C /usr/local -xzf go*.linux-amd64.tar.gz && rm -f go*.linux-amd64.tar.gz
-RUN patchelf --set-interpreter /lib/libc.musl-x86_64.so.1 /usr/local/go/bin/go
+RUN apt update && apt upgrade && apt install unzip libwebp-dev iputils-ping -y
 
-#Download Pixlet
-RUN git clone https://github.com/tidbyt/pixlet.git $REPO 
-WORKDIR $REPO
+WORKDIR /tmp
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && apt-get install -y nodejs && node -v
 
-#Build Pixlet
-RUN npm install && npm run build
-RUN make build
+RUN git clone https://github.com/tidbyt/pixlet.git
+WORKDIR /tmp/pixlet
+RUN npm install && npm run build && make build
 
-#clean up build prereqs
-RUN apk del -r curl wget git make gcc patchelf libc-dev 
+CMD ["bash"]
 
 EXPOSE 8080
