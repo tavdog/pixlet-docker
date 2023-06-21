@@ -5,7 +5,7 @@ ENV NODE_URL https://deb.nodesource.com/setup_16.x
 #ENV REPO https://github.com/tidbyt/pixlet.git
 ENV REPO https://github.com/tavdog/pixlet
 
-RUN apt update && apt upgrade && apt install unzip libwebp-dev iputils-ping -y
+RUN apt update && apt upgrade && apt install libwebp-dev -y
 
 WORKDIR /tmp
 RUN curl -fsSL $NODE_URL | bash - && apt-get install -y nodejs && node -v
